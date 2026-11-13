@@ -1,4 +1,10 @@
 {
+  "/wssqs-default-route": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wssqs-default-route.template.json"
+    }
+  ],
   "/wssqs-default-route/disconnectServiceRole": [
     {
       "type": "aws:cdk:analytics:construct",

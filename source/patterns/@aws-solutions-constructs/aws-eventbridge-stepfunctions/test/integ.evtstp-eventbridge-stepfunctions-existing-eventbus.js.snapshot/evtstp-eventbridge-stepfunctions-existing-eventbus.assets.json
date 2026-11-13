@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "2b4193dd6877aa1fd32e8295e83e3d5ff6b52d6251d997a61bec0fbd9af50110": {
+    "4a2f9ea60c19a1b7030a6b0d77ca1bb339d174b67aede803f00c8cda562b84e2": {
       "displayName": "evtstp-eventbridge-stepfunctions-existing-eventbus Template",
       "source": {
         "path": "evtstp-eventbridge-stepfunctions-existing-eventbus.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-9c0d87c3": {
+        "current_account-current_region-7d543430": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "2b4193dd6877aa1fd32e8295e83e3d5ff6b52d6251d997a61bec0fbd9af50110.json",
+          "objectKey": "4a2f9ea60c19a1b7030a6b0d77ca1bb339d174b67aede803f00c8cda562b84e2.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

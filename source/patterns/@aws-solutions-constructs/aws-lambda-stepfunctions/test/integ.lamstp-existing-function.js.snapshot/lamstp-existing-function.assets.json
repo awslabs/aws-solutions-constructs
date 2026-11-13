@@ -1,16 +1,16 @@
 {
-  "version": "50.0.0",
+  "version": "55.0.0",
   "files": {
-    "ca783800c8723ebcf965487ba24f51afef2effd1c9a5cbae96fdb27c3727a6f4": {
+    "8c23fde0b729a67984a5ea82a60a000f056c62b6e26f151cb3e7826ce4564946": {
       "displayName": "lamstp-existing-function Template",
       "source": {
         "path": "lamstp-existing-function.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-bcba97ee": {
+        "current_account-current_region-5e3c667a": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "ca783800c8723ebcf965487ba24f51afef2effd1c9a5cbae96fdb27c3727a6f4.json",
+          "objectKey": "8c23fde0b729a67984a5ea82a60a000f056c62b6e26f151cb3e7826ce4564946.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

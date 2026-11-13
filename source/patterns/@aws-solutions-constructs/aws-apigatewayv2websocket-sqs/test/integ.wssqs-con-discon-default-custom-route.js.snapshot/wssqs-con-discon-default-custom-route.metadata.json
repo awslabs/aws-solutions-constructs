@@ -1,4 +1,10 @@
 {
+  "/wssqs-con-discon-default-custom-route": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wssqs-con-discon-default-custom-route.template.json"
+    }
+  ],
   "/wssqs-con-discon-default-custom-route/connectServiceRole": [
     {
       "type": "aws:cdk:analytics:construct",

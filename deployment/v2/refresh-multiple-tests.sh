@@ -102,6 +102,7 @@ resources
 deployment_dir=$(cd $(dirname $0) && pwd)
 constructs_root_dir="$deployment_dir/../.."
 source_dir="$deployment_dir/../../source"
+export CDK_VALIDATION=false
 
 echo "============================================================================================="
 echo "Syncing the version numbers for all packages"

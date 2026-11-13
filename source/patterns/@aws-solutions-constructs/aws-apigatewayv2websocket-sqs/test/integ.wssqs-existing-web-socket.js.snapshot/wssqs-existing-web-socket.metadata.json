@@ -1,4 +1,10 @@
 {
+  "/wssqs-existing-web-socket": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wssqs-existing-web-socket.template.json"
+    }
+  ],
   "/wssqs-existing-web-socket/connectServiceRole": [
     {
       "type": "aws:cdk:analytics:construct",

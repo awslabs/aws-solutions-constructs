@@ -1,4 +1,10 @@
 {
+  "/cftoais3-existing-bucket": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "cftoais3-existing-bucket.template.json"
+    }
+  ],
   "/cftoais3-existing-bucket/scrapBucketLog": [
     {
       "type": "aws:cdk:analytics:construct",

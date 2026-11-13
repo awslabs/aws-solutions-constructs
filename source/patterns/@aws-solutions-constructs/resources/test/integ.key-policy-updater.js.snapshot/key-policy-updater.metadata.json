@@ -1,4 +1,10 @@
 {
+  "/key-policy-updater": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "key-policy-updater.template.json"
+    }
+  ],
   "/key-policy-updater/test key": [
     {
       "type": "aws:cdk:analytics:construct",

@@ -658,7 +658,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "e16ffb3b34af185b8b30c88fdb19faa13b6c42bb38580485c4e84b384ee48b63.zip"
+     "S3Key": "5c9fd00ba20b9f0f8161f2bd2ccae0f9c29df2b76d34155b8bf281abc354adc8.zip"
     },
     "Description": "AWS CDK resource provider framework - onEvent (opilam-apiFromAssetLambdaFunctionAliases/OpenApiGatewayToLambda/ApiTemplateWriterProvider)",
     "Environment": {
@@ -873,9 +873,26 @@
    "Properties": {
     "AccessLogSetting": {
      "DestinationArn": {
-      "Fn::GetAtt": [
-       "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC",
-       "Arn"
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":logs:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        ":log-group:",
+        {
+         "Ref": "OpenApiGatewayToLambdaApiAccessLogGroupE21284EC"
+        }
+       ]
       ]
      },
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"

@@ -1,5 +1,5 @@
 {
-  "version": "48.0.0",
+  "version": "55.0.0",
   "artifacts": {
     "apisqscustomintegrationresponsesIntegDefaultTestDeployAssert5D05BCDD.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "apisqscustomintegrationresponsesIntegDefaultTestDeployAssert5D05BCDD.assets"
       ],
-      "metadata": {
-        "/apisqs-custom-integration-responses/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/apisqs-custom-integration-responses/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "apisqscustomintegrationresponsesIntegDefaultTestDeployAssert5D05BCDD.metadata.json",
       "displayName": "apisqs-custom-integration-responses/Integ/DefaultTest/DeployAssert"
     },
     "apisqs-custom-integration-responses.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/56527e828935f048df64e01d551b8f010672cd18ee5217209d9c53af9259da5e.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f0eeef7a80a0f115b452a9b3aff1a9f36352ac93adf417bbe8711d533640a66f.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,372 +68,7 @@
       "dependencies": [
         "apisqs-custom-integration-responses.assets"
       ],
-      "metadata": {
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue-dlq": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "fifo": "*"
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesqueuedlqD02C49B3"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue-dlq/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesqueuedlqPolicy65790213"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "deadLetterQueue": {
-                "maxReceiveCount": "*",
-                "queue": "*"
-              }
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesqueueF9FA04EF"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/queue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesqueuePolicy22D3DE99"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/ApiAccessLogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/ApiAccessLogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesApiAccessLogGroup12574495"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "endpointConfiguration": {
-                "types": [
-                  "EDGE"
-                ]
-              },
-              "cloudWatchRole": false,
-              "deployOptions": {
-                "accessLogDestination": "*",
-                "accessLogFormat": "*",
-                "loggingLevel": "INFO",
-                "dataTraceEnabled": false,
-                "tracingEnabled": true
-              },
-              "defaultMethodOptions": {
-                "authorizationType": "*"
-              }
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApi3BE7E402"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Deployment": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "description": "*",
-              "api": "*",
-              "retainDeployments": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToLogicalId": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Deployment/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiDeployment9749223547b7cf1e61211d0a1959e7fc8dd7abd0"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/DeploymentStage.prod": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "deployment": "*",
-              "accessLogDestination": "*",
-              "accessLogFormat": "*",
-              "loggingLevel": "INFO",
-              "dataTraceEnabled": false,
-              "tracingEnabled": true
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/DeploymentStage.prod/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiDeploymentStageprod07200D02"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Endpoint": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiEndpointEBC579CE"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Default": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "resource": "*",
-              "httpMethod": "*",
-              "integration": "*",
-              "options": {
-                "methodResponses": [
-                  {
-                    "statusCode": "*",
-                    "responseParameters": "*"
-                  },
-                  {
-                    "statusCode": "*",
-                    "responseParameters": "*"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addMethodResponse": [
-                {
-                  "statusCode": "*",
-                  "responseParameters": "*"
-                }
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addMethodResponse": [
-                {
-                  "statusCode": "*",
-                  "responseParameters": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/Default/GET/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiGETD105D1F1"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/UsagePlan": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "apiStages": [
-                {
-                  "api": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/RestApi/UsagePlan/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesRestApiUsagePlan4172DBF8"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole/ImportLambdaRestApiCloudWatchRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiCloudWatchRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesLambdaRestApiCloudWatchRoleC95A1D3B"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/LambdaRestApiAccount": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesLambdaRestApiAccountEFC75D59"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/api-gateway-role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/Importapi-gateway-role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesapigatewayrole6FC88B17"
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/apisqs-custom-integration-responses/test-api-gateway-sqs-integration-responses/api-gateway-role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testapigatewaysqsintegrationresponsesapigatewayroleDefaultPolicyB4D5EFE9"
-          }
-        ],
-        "/apisqs-custom-integration-responses/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/apisqs-custom-integration-responses/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "apisqs-custom-integration-responses.metadata.json",
       "displayName": "apisqs-custom-integration-responses"
     },
     "Tree": {
@@ -460,57 +82,50 @@
       "properties": {
         "module": "aws-cdk-lib",
         "flags": {
-          "@aws-cdk/core:enableStackNameDuplicates": {
+          "@aws-cdk/aws-signer:signingProfileNamePassedToCfn": {
+            "userValue": true,
             "recommendedValue": true,
-            "explanation": "Allow multiple stacks with the same name"
-          },
-          "aws-cdk:enableDiffNoFail": {
-            "recommendedValue": true,
-            "explanation": "Make `cdk diff` not fail when there are differences"
+            "explanation": "Pass signingProfileName to CfnSigningProfile"
           },
           "@aws-cdk/core:newStyleStackSynthesis": {
             "recommendedValue": true,
-            "explanation": "Switch to new stack synthesis method which enables CI/CD"
+            "explanation": "Switch to new stack synthesis method which enables CI/CD",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/core:stackRelativeExports": {
             "recommendedValue": true,
-            "explanation": "Name exports based on the construct paths relative to the stack, rather than the global construct path"
+            "explanation": "Name exports based on the construct paths relative to the stack, rather than the global construct path",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
-          "@aws-cdk/aws-ecr-assets:dockerIgnoreSupport": {
+          "@aws-cdk/aws-ecs-patterns:secGroupsDisablesImplicitOpenListener": {
+            "userValue": true,
             "recommendedValue": true,
-            "explanation": "DockerImageAsset properly supports `.dockerignore` files by default"
-          },
-          "@aws-cdk/aws-secretsmanager:parseOwnedSecretName": {
-            "recommendedValue": true,
-            "explanation": "Fix the referencing of SecretsManager names from ARNs"
-          },
-          "@aws-cdk/aws-kms:defaultKeyPolicies": {
-            "recommendedValue": true,
-            "explanation": "Tighten default KMS key policies"
-          },
-          "@aws-cdk/aws-s3:grantWriteWithoutAcl": {
-            "recommendedValue": true,
-            "explanation": "Remove `PutObjectAcl` from Bucket.grantWrite"
-          },
-          "@aws-cdk/aws-ecs-patterns:removeDefaultDesiredCount": {
-            "recommendedValue": true,
-            "explanation": "Do not specify a default DesiredCount for ECS services"
+            "explanation": "Disable implicit openListener when custom security groups are provided"
           },
           "@aws-cdk/aws-rds:lowercaseDbIdentifier": {
             "recommendedValue": true,
-            "explanation": "Force lowercasing of RDS Cluster names in CDK"
+            "explanation": "Force lowercasing of RDS Cluster names in CDK",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": {
             "recommendedValue": true,
-            "explanation": "Allow adding/removing multiple UsagePlanKeys independently"
-          },
-          "@aws-cdk/aws-efs:defaultEncryptionAtRest": {
-            "recommendedValue": true,
-            "explanation": "Enable this feature flag to have elastic file systems encrypted at rest by default."
+            "explanation": "Allow adding/removing multiple UsagePlanKeys independently",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-lambda:recognizeVersionProps": {
             "recommendedValue": true,
-            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the  `fn.currentVersion`."
+            "explanation": "Enable this feature flag to opt in to the updated logical id calculation for Lambda Version created using the  `fn.currentVersion`.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-lambda:recognizeLayerVersion": {
             "userValue": true,
@@ -519,7 +134,10 @@
           },
           "@aws-cdk/aws-cloudfront:defaultSecurityPolicyTLSv1.2_2021": {
             "recommendedValue": true,
-            "explanation": "Enable this feature flag to have cloudfront distributions use the security policy TLSv1.2_2021 by default."
+            "explanation": "Enable this feature flag to have cloudfront distributions use the security policy TLSv1.2_2021 by default.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/core:checkSecretUsage": {
             "userValue": true,
@@ -596,7 +214,7 @@
           "@aws-cdk/aws-iam:importedRoleStackSafeDefaultPolicyName": {
             "userValue": true,
             "recommendedValue": true,
-            "explanation": "Enable this feature to by default create default policy names for imported roles that depend on the stack the role is in."
+            "explanation": "Enable this feature to create default policy names for imported roles that depend on the stack the role is in."
           },
           "@aws-cdk/aws-s3:serverAccessLogsUseBucketPolicy": {
             "userValue": true,
@@ -740,12 +358,20 @@
           },
           "@aws-cdk/pipelines:reduceAssetRoleTrustScope": {
             "recommendedValue": true,
-            "explanation": "Remove the root account principal from PipelineAssetsFileRole trust policy"
+            "explanation": "Remove the root account principal from PipelineAssetsFileRole trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-eks:nodegroupNameAttribute": {
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
+          },
+          "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
           },
           "@aws-cdk/aws-ec2:ebsDefaultGp3Volume": {
             "userValue": true,
@@ -769,22 +395,15 @@
           },
           "@aws-cdk/aws-stepfunctions-tasks:useNewS3UriParametersForBedrockInvokeModelTask": {
             "recommendedValue": true,
-            "explanation": "When enabled, use new props for S3 URI field in task definition of state machine for bedrock invoke model."
+            "explanation": "When enabled, use new props for S3 URI field in task definition of state machine for bedrock invoke model.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/core:explicitStackTags": {
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, stack tags need to be assigned explicitly on a Stack."
-          },
-          "@aws-cdk/aws-ecs:enableImdsBlockingDeprecatedFeature": {
-            "userValue": false,
-            "recommendedValue": false,
-            "explanation": "When set to true along with canContainersAccessInstanceRole=false in ECS cluster, new updated commands will be added to UserData to block container accessing IMDS. **Applicable to Linux only. IMPORTANT: See [details.](#aws-cdkaws-ecsenableImdsBlockingDeprecatedFeature)**"
-          },
-          "@aws-cdk/aws-ecs:disableEcsImdsBlocking": {
-            "userValue": true,
-            "recommendedValue": true,
-            "explanation": "When set to true, CDK synth will throw exception if canContainersAccessInstanceRole is false. **IMPORTANT: See [details.](#aws-cdkaws-ecsdisableEcsImdsBlocking)**"
           },
           "@aws-cdk/aws-ecs:reduceEc2FargateCloudWatchPermissions": {
             "userValue": true,
@@ -833,7 +452,10 @@
           },
           "@aws-cdk/core:aspectStabilization": {
             "recommendedValue": true,
-            "explanation": "When enabled, a stabilization loop will be run when invoking Aspects during synthesis."
+            "explanation": "When enabled, a stabilization loop will be run when invoking Aspects during synthesis.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-route53-targets:userPoolDomainNameMethodWithoutCustomResource": {
             "userValue": true,
@@ -867,7 +489,10 @@
           },
           "@aws-cdk/pipelines:reduceStageRoleTrustScope": {
             "recommendedValue": true,
-            "explanation": "Remove the root account principal from Stage addActions trust policy"
+            "explanation": "Remove the root account principal from Stage addActions trust policy",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-events:requireEventBusPolicySid": {
             "userValue": true,
@@ -890,7 +515,10 @@
           },
           "@aws-cdk/pipelines:reduceCrossAccountActionRoleTrustScope": {
             "recommendedValue": true,
-            "explanation": "When enabled, scopes down the trust policy for the cross-account action role"
+            "explanation": "When enabled, scopes down the trust policy for the cross-account action role",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           },
           "@aws-cdk/aws-stepfunctions:useDistributedMapResultWriterV2": {
             "userValue": true,
@@ -920,10 +548,99 @@
             "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, CDK creates and manages loggroup for the lambda function"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:networkLoadBalancerWithSecurityGroupByDefault": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, Network Load Balancer will be created with a security group by default."
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:httpInvokeDynamicJsonPathEndpoint": {
+            "recommendedValue": true,
+            "explanation": "When enabled, allows using a dynamic apiEndpoint with JSONPath format in HttpInvoke tasks.",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-ecs-patterns:uniqueTargetGroupId": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, ECS patterns will generate unique target group IDs to prevent conflicts during load balancer replacement"
+          },
+          "@aws-cdk/aws-route53-patterns:useDistribution": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
+          },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
+          "@aws-cdk/core:automaticL1Traits": {
+            "recommendedValue": true,
+            "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "userValue": "weak",
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
+          },
+          "@aws-cdk/core:validateAgainstDefaultRules": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Treat CloudFormation Validate findings as errors"
+          },
+          "@aws-cdk/aws-ecs:removeEmptyLoadBalancers": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render an empty `LoadBalancers` array on an ECS service that has no target groups"
+          },
+          "@aws-cdk/aws-cloudfront:defaultViewerProtocolPolicyRedirectToHttps": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Default Distribution cache behaviors to redirect HTTP viewer requests to HTTPS"
+          },
+          "@aws-cdk/aws-apigateway:logGroupDestinationArnWithoutWildcard": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render the API Gateway access log destination ARN without the trailing `:*`"
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:evaluateExpressionDedicatedFunction": {
+            "recommendedValue": true,
+            "explanation": "When enabled, each EvaluateExpression task gets its own Lambda function",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
           }
         }
       }
     }
   },
-  "minimumCliVersion": "2.1021.0"
+  "minimumCliVersion": "2.1148.1"
 }

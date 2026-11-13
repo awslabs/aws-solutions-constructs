@@ -1,31 +1,31 @@
 {
-  "version": "54.0.0",
+  "version": "55.0.0",
   "files": {
-    "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093": {
+    "f178182c7c3aac6ad18bdaae53a2d38f72b2cf690d17b9efa635c7ce37f77d71": {
       "displayName": "farsec-existing-resources/Custom::VpcRestrictDefaultSGCustomResourceProvider Code",
       "source": {
-        "path": "asset.02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093",
+        "path": "asset.f178182c7c3aac6ad18bdaae53a2d38f72b2cf690d17b9efa635c7ce37f77d71",
         "packaging": "zip"
       },
       "destinations": {
-        "current_account-us-east-1-763a9eab": {
+        "current_account-us-east-1-4fb6a845": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093.zip",
+          "objectKey": "f178182c7c3aac6ad18bdaae53a2d38f72b2cf690d17b9efa635c7ce37f77d71.zip",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }
       }
     },
-    "d0d35f078f357b9d0534b8d1c96ebb834a5ffe0e4ef9cc13a36b1a7e941b8fd5": {
+    "1991c8747a4da95d6ecce89f37cbfb87dd1b64cc47b1562b71c12147ad61547c": {
       "displayName": "farsec-existing-resources Template",
       "source": {
         "path": "farsec-existing-resources.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-us-east-1-14530d73": {
+        "current_account-us-east-1-417a7e59": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
-          "objectKey": "d0d35f078f357b9d0534b8d1c96ebb834a5ffe0e4ef9cc13a36b1a7e941b8fd5.json",
+          "objectKey": "1991c8747a4da95d6ecce89f37cbfb87dd1b64cc47b1562b71c12147ad61547c.json",
           "region": "us-east-1",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
         }

@@ -65,9 +65,26 @@
    "Properties": {
     "AccessLogSetting": {
      "DestinationArn": {
-      "Fn::GetAtt": [
-       "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616",
-       "Arn"
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":logs:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":",
+        {
+         "Ref": "AWS::AccountId"
+        },
+        ":log-group:",
+        {
+         "Ref": "testapigatewaykinesisdefaultApiAccessLogGroup51BF9616"
+        }
+       ]
       ]
      },
      "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"

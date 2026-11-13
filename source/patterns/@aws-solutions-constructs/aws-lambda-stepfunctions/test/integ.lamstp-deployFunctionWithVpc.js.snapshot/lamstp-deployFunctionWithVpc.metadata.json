@@ -5,6 +5,10 @@
       "data": {
         "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
       }
+    },
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "lamstp-deployFunctionWithVpc.template.json"
     }
   ],
   "/lamstp-deployFunctionWithVpc/lambdalamstp-test": [

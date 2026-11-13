@@ -91,9 +91,10 @@ test("creates API Gateway role and grants permissions and apigateway stage setup
         {
           Action: ["logs:CreateLogStream", "logs:PutLogEvents", "logs:GetLogEvents"],
           Effect: "Allow",
-          Resource: {
-            "Fn::GetAtt": [Match.stringLikeRegexp("LogGroup*"), "Arn"],
-          },
+          // aws-cdk-lib 2.276.0+ grants on both the plain log group ARN and the ":*" ARN
+          Resource: Match.arrayWith([
+            { "Fn::GetAtt": [Match.stringLikeRegexp("LogGroup*"), "Arn"] },
+          ]),
         },
         {
           Action: ["logs:CreateLogGroup", "logs:DescribeLogGroups", "logs:DescribeLogStreams", "logs:FilterLogEvents"],

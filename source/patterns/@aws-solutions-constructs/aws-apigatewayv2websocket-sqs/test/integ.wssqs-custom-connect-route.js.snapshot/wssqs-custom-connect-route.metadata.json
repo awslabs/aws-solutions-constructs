@@ -1,4 +1,10 @@
 {
+  "/wssqs-custom-connect-route": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wssqs-custom-connect-route.template.json"
+    }
+  ],
   "/wssqs-custom-connect-route/connectServiceRole": [
     {
       "type": "aws:cdk:analytics:construct",
