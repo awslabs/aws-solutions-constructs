@@ -5,6 +5,7 @@ set -euo pipefail
 starting_dir=$PWD
 deployment_dir=$(cd $(dirname $0) && pwd)
 source_dir="$deployment_dir/../../source"
+export CDK_VALIDATION=false
 
 # Required to update node_modules correctly
 echo "============================================================================================="
@@ -17,7 +18,7 @@ export PATH=$source_dir/node_modules/.bin:$PATH
 export NODE_OPTIONS="--max-old-space-size=4096 ${NODE_OPTIONS:-}"
 
 # Install CDK Integration Test Tool
-npm install -g @aws-cdk/integ-runner@2.200.2
+npm install -g @aws-cdk/integ-runner@2.207.0
 npm install -g aws-cdk
 npm install -g npm-license-crawler
 npm install -g asciidoctor

@@ -1,0 +1,342 @@
+{
+  "/apisag-additional-request-templates": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "apisag-additional-request-templates.template.json"
+    }
+  ],
+  "/apisag-additional-request-templates/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/apisag-additional-request-templates/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/ApiAccessLogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "endpointConfiguration": {
+          "types": [
+            "EDGE"
+          ]
+        },
+        "cloudWatchRole": false,
+        "deployOptions": {
+          "accessLogDestination": "*",
+          "accessLogFormat": "*",
+          "loggingLevel": "INFO",
+          "dataTraceEnabled": false,
+          "tracingEnabled": true
+        },
+        "defaultMethodOptions": {
+          "authorizationType": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addRequestValidator": [
+          "*",
+          {
+            "requestValidatorName": "*",
+            "validateRequestParameters": true
+          }
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/LambdaRestApiCloudWatchRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/LambdaRestApiAccount": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultLambdaRestApiAccount6B3C7FDD"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/api-gateway-role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/InvokeEndpointPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/ApiAccessLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultApiAccessLogGroupAD5E1ADF"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApi7D1DA11B"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Deployment": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "description": "*",
+        "api": "*",
+        "retainDeployments": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToLogicalId": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/DeploymentStage.prod": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "deployment": "*",
+        "accessLogDestination": "*",
+        "accessLogFormat": "*",
+        "loggingLevel": "INFO",
+        "dataTraceEnabled": false,
+        "tracingEnabled": true
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Endpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiEndpoint1EFF6760"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/UsagePlan": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "apiStages": [
+          {
+            "api": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/request-validator": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "requestValidatorName": "*",
+        "validateRequestParameters": true,
+        "restApi": "*"
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/LambdaRestApiCloudWatchRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultLambdaRestApiCloudWatchRole56EE67C8"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/api-gateway-role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultapigatewayrole8EA61BE4"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/InvokeEndpointPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultInvokeEndpointPolicyB835D2B2"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Deployment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiDeployment04BFEB63ab5dc870083af2a47a41af0f4ee69fff"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/DeploymentStage.prod/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiDeploymentStageprodFD1743A7"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "parent": "*",
+        "pathPart": "*"
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/UsagePlan/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiUsagePlan7C5B0716"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/request-validator/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApirequestvalidator1A23C251"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiuserid9952BA11"
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}/GET": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "resource": "*",
+        "httpMethod": "*",
+        "integration": "*",
+        "options": {
+          "methodResponses": [
+            {
+              "statusCode": "*"
+            },
+            {
+              "statusCode": "*"
+            },
+            {
+              "statusCode": "*"
+            }
+          ],
+          "requestValidator": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*"
+          }
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addMethodResponse": [
+          {
+            "statusCode": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/apisag-additional-request-templates/test-apigateway-sagemakerendpoint-default/RestApi/Default/{user_id}/GET/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testapigatewaysagemakerendpointdefaultRestApiuseridGETB3BB79AA"
+    }
+  ]
+}

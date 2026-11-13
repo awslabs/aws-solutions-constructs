@@ -1,16 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "55.0.0",
   "files": {
-    "af638c9225efe095e048a696f41c28fb2e1169be077b993fc70a2e43152204f9": {
+    "7b7de95b38621ccb28c819d76c0f167c9d5d148e17bd674fb2f7c0652043a01e": {
       "displayName": "evtstp-eventbridge-stepfunctions-no-argument Template",
       "source": {
         "path": "evtstp-eventbridge-stepfunctions-no-argument.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-0b87d42b": {
+        "current_account-current_region-33f375b8": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "af638c9225efe095e048a696f41c28fb2e1169be077b993fc70a2e43152204f9.json",
+          "objectKey": "7b7de95b38621ccb28c819d76c0f167c9d5d148e17bd674fb2f7c0652043a01e.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

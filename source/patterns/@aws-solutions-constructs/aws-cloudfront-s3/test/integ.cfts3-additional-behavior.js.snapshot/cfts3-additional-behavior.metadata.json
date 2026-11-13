@@ -1,4 +1,10 @@
 {
+  "/cfts3-additional-behavior": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "cfts3-additional-behavior.template.json"
+    }
+  ],
   "/cfts3-additional-behavior/scrapBucketLog": [
     {
       "type": "aws:cdk:analytics:construct",

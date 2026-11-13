@@ -1,0 +1,453 @@
+{
+  "/dbspstp-lambda-function-enrichment": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "dbspstp-lambda-function-enrichment.template.json"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/enrichment-function": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "runtime": "*",
+        "handler": "*",
+        "code": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/lambdadbsstp-test": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/enrichment-function/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/enrichment-function/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "enrichmentfunction84C1BE72"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/lambdadbsstp-test/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/lambdadbsstp-test/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdadbsstptestE56C39A8"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/DynamoTable": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "billingMode": "PAY_PER_REQUEST",
+        "encryption": "AWS_MANAGED",
+        "partitionKey": {
+          "name": "*",
+          "type": "S"
+        },
+        "stream": "NEW_AND_OLD_IMAGES",
+        "pointInTimeRecoverySpecification": {
+          "pointInTimeRecoveryEnabled": true
+        }
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachineLogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999,
+        "logGroupName": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logs": {
+          "destination": "*",
+          "level": "ERROR"
+        },
+        "definitionBody": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionFailedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionThrottledAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionAbortedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/dlq": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "encryption": "KMS_MANAGED"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "inlinePolicies": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/enrichmentpolicytest-dbs-pipes-states-construct": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "statements": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999,
+        "logGroupName": "*"
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/pipe-test-dbs-pipes-states-construct": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructpipetestdbspipesstatesconstruct6F9C482F"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/enrichment-function/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "enrichmentfunctionServiceRoleF21A0515"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/lambdadbsstp-test/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdadbsstptestServiceRole4515C09E"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/DynamoTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructDynamoTable5457FA02"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/DynamoTable/ScalingRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachineLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructStateMachineLogGroup1E17AD86"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine/Role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructStateMachine9909327F"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionFailedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructExecutionFailedAlarm6678470E"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionThrottledAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructExecutionThrottledAlarm0286BB10"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/ExecutionAbortedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructExecutionAbortedAlarmF4C945F2"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/dlq/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructdlqF765E6A0"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/dlq/Policy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "queues": [
+          "*"
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/PipeRole--test-dbs-pipes-states-construct/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructPipeRoletestdbspipesstatesconstruct4E57732C"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/enrichmentpolicytest-dbs-pipes-states-construct/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructenrichmentpolicytestdbspipesstatesconstruct28034D11"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/LogGroup-test-dbs-pipes-states-construct/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructLogGrouptestdbspipesstatesconstructAB6BC73F"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructStateMachineRole802AA550"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine/Role/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/dlq/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructdlqPolicyB08573AE"
+    }
+  ],
+  "/dbspstp-lambda-function-enrichment/test-dbs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "testdbspipesstatesconstructStateMachineRoleDefaultPolicy12413F49"
+    }
+  ]
+}

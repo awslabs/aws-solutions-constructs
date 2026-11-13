@@ -567,7 +567,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+     "S3Key": "6dba3da2af96b69a187d689b326e5272b9abc8671c0427845a8bed243e02877d.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -1431,7 +1431,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "02b51ab524e7bcf8f477de3e71e5f9a72e448301b26ba62e9e75a14f9c55a093.zip"
+     "S3Key": "f178182c7c3aac6ad18bdaae53a2d38f72b2cf690d17b9efa635c7ce37f77d71.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -1773,6 +1773,7 @@
     "DesiredCount": 2,
     "EnableECSManagedTags": false,
     "LaunchType": "FARGATE",
+    "LoadBalancers": [],
     "NetworkConfiguration": {
      "AwsvpcConfiguration": {
       "AssignPublicIp": "DISABLED",

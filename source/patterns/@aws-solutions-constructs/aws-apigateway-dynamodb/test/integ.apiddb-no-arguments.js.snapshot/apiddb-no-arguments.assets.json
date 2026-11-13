@@ -1,16 +1,16 @@
 {
-  "version": "45.0.0",
+  "version": "55.0.0",
   "files": {
-    "5f315615396d1f1c029fe64320b475ee5e88ebddccffaaf2fa6ade468e4935f4": {
+    "3a77750ed31813c222da39d4b3d0334ec6b0f58c3ae4df12bf0c3bcebf7353ff": {
       "displayName": "apiddb-no-arguments Template",
       "source": {
         "path": "apiddb-no-arguments.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-5e39109a": {
+        "current_account-current_region-ee588129": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "5f315615396d1f1c029fe64320b475ee5e88ebddccffaaf2fa6ade468e4935f4.json",
+          "objectKey": "3a77750ed31813c222da39d4b3d0334ec6b0f58c3ae4df12bf0c3bcebf7353ff.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

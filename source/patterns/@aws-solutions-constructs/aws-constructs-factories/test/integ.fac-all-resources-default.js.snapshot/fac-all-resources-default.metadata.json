@@ -1,4 +1,10 @@
 {
+  "/fac-all-resources-default": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "fac-all-resources-default.template.json"
+    }
+  ],
   "/fac-all-resources-default/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
     {
       "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",

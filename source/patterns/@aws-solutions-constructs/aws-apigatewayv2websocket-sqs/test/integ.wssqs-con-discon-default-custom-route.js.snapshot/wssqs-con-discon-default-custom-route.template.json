@@ -483,12 +483,37 @@
         "logs:PutLogEvents"
        ],
        "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "ApiGatewayV2WebSocketToSqsLogGroupAD536311",
-         "Arn"
-        ]
-       }
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiGatewayV2WebSocketToSqsLogGroupAD536311",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:",
+           {
+            "Ref": "ApiGatewayV2WebSocketToSqsLogGroupAD536311"
+           }
+          ]
+         ]
+        }
+       ]
       },
       {
        "Action": [

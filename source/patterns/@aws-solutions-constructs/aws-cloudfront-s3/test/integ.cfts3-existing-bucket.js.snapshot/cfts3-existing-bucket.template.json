@@ -205,7 +205,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+     "S3Key": "6dba3da2af96b69a187d689b326e5272b9abc8671c0427845a8bed243e02877d.zip"
     },
     "Timeout": 900,
     "MemorySize": 128,
@@ -890,7 +890,7 @@
        "Compress": true,
        "PathPattern": "/images/*.jpg",
        "TargetOriginId": "cfts3existingbuckettestcloudfronts3CloudFrontDistributionOrigin28690577F",
-       "ViewerProtocolPolicy": "allow-all"
+       "ViewerProtocolPolicy": "redirect-to-https"
       }
      ],
      "DefaultCacheBehavior": {

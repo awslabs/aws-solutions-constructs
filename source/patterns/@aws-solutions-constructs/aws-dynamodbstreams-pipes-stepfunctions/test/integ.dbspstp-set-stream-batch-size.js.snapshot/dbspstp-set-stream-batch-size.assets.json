@@ -1,16 +1,16 @@
 {
-  "version": "48.0.0",
+  "version": "55.0.0",
   "files": {
-    "a64ffb0ba4a42d5bed8f19c3e4e926a945f618fbc5830aefe59dfb5a7548ca7d": {
+    "a36111ec1a0bd081c2458c6dcea7a0be789eefe8490747579fc74fb5ca74936c": {
       "displayName": "dbspstp-set-stream-batch-size Template",
       "source": {
         "path": "dbspstp-set-stream-batch-size.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-0781e298": {
+        "current_account-current_region-899e4f15": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "a64ffb0ba4a42d5bed8f19c3e4e926a945f618fbc5830aefe59dfb5a7548ca7d.json",
+          "objectKey": "a36111ec1a0bd081c2458c6dcea7a0be789eefe8490747579fc74fb5ca74936c.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }

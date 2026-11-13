@@ -1,0 +1,277 @@
+{
+  "/facstp-defaults": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "facstp-defaults.template.json"
+    }
+  ],
+  "/facstp-defaults/lambdatest": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "code": "*",
+        "runtime": "*",
+        "handler": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/facstp-defaults/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/facstp-defaults/target/StateMachineLogGrouptestsm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "retention": 9999,
+        "logGroupName": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logs": {
+          "destination": "*",
+          "level": "ERROR"
+        },
+        "definitionBody": "*"
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToRolePolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/facstp-defaults/target/ExecutionFailedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/target/ExecutionThrottledAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/target/ExecutionAbortedAlarm": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "metric": {
+          "warnings": "*",
+          "warningsV2": "*"
+        },
+        "threshold": "*",
+        "evaluationPeriods": "*",
+        "comparisonOperator": "*",
+        "alarmDescription": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/lambdatest/ServiceRole": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        },
+        "managedPolicies": [
+          {
+            "managedPolicyArn": "*"
+          }
+        ]
+      }
+    }
+  ],
+  "/facstp-defaults/lambdatest/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdatest8B679D7F"
+    }
+  ],
+  "/facstp-defaults/lambdatest/LogGroup": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "logGroupName": "*"
+      }
+    }
+  ],
+  "/facstp-defaults/target/StateMachineLogGrouptestsm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetStateMachineLogGrouptestsm52968C7C"
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm/Role": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": {
+        "assumedBy": {
+          "principalAccount": "*",
+          "assumeRoleAction": "*"
+        }
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachInlinePolicy": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addToPrincipalPolicy": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetStateMachinetestsm59897C57"
+    }
+  ],
+  "/facstp-defaults/target/ExecutionFailedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetExecutionFailedAlarm97DD1630"
+    }
+  ],
+  "/facstp-defaults/target/ExecutionThrottledAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetExecutionThrottledAlarmCAA85FD5"
+    }
+  ],
+  "/facstp-defaults/target/ExecutionAbortedAlarm/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetExecutionAbortedAlarm70BA06C6"
+    }
+  ],
+  "/facstp-defaults/lambdatest/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdatestServiceRoleF3BDB8FC"
+    }
+  ],
+  "/facstp-defaults/lambdatest/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "lambdatestLogGroupA97D94B2"
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetStateMachinetestsmRoleB774D656"
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm/Role/DefaultPolicy": [
+    {
+      "type": "aws:cdk:analytics:construct",
+      "data": "*"
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "attachToRole": [
+          "*"
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    },
+    {
+      "type": "aws:cdk:analytics:method",
+      "data": {
+        "addStatements": [
+          {}
+        ]
+      }
+    }
+  ],
+  "/facstp-defaults/target/StateMachinetestsm/Role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "targetStateMachinetestsmRoleDefaultPolicy468E802C"
+    }
+  ]
+}

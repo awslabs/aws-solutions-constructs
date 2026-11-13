@@ -1,5 +1,5 @@
 {
-  "version": "52.0.0",
+  "version": "55.0.0",
   "artifacts": {
     "sqspstplambdafunctionenrichmentIntegDefaultTestDeployAssert1F2A8125.assets": {
       "type": "cdk:asset-manifest",
@@ -33,20 +33,7 @@
       "dependencies": [
         "sqspstplambdafunctionenrichmentIntegDefaultTestDeployAssert1F2A8125.assets"
       ],
-      "metadata": {
-        "/sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "sqspstplambdafunctionenrichmentIntegDefaultTestDeployAssert1F2A8125.metadata.json",
       "displayName": "sqspstp-lambda-function-enrichment/Integ/DefaultTest/DeployAssert"
     },
     "sqspstp-lambda-function-enrichment.assets": {
@@ -66,7 +53,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0a283c464f09cb6a65498d30464dae5a789c577435f57c02edeeefbd3584f857.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1f51cfc3e2dcc3ab76bedb06001f20a53076f1f758e78065987b135155c132b8.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -81,459 +68,7 @@
       "dependencies": [
         "sqspstp-lambda-function-enrichment.assets"
       ],
-      "metadata": {
-        "/sqspstp-lambda-function-enrichment/enrichment-function": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "runtime": "*",
-              "handler": "*",
-              "code": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/enrichment-function/ServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "managedPolicies": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/enrichment-function/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "enrichmentfunctionServiceRoleF21A0515"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/enrichment-function/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "enrichmentfunction84C1BE72"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "code": "*",
-              "runtime": "*",
-              "handler": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test/ServiceRole": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "managedPolicies": [
-                {
-                  "managedPolicyArn": "*"
-                }
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptestServiceRoleF17BB6C7"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/lambdas3stp-test/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "lambdas3stptest9FBDC6CE"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "fifo": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuedlq420A82FD"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue-dlq/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuedlqPolicyB1D70483"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "encryption": "KMS_MANAGED",
-              "deadLetterQueue": {
-                "maxReceiveCount": "*",
-                "queue": "*"
-              }
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueueA7C76715"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Policy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "queues": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/queue/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructqueuePolicyFD32B562"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachineLogGroup": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999,
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachineLogGroup/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineLogGroupADE94F1D"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "logs": {
-                "destination": "*",
-                "level": "ERROR"
-              },
-              "definitionBody": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToRolePolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              }
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addToPrincipalPolicy": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineRoleBF97BFC0"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": "*"
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Role/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachineRoleDefaultPolicyD1BA2BF2"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/StateMachine/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructStateMachine29272AA9"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionFailedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionFailedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionFailedAlarm1002FF55"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionThrottledAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionThrottledAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionThrottledAlarm0242B01A"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionAbortedAlarm": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "metric": {
-                "warnings": "*",
-                "warningsV2": "*"
-              },
-              "threshold": "*",
-              "evaluationPeriods": "*",
-              "comparisonOperator": "*",
-              "alarmDescription": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/ExecutionAbortedAlarm/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructExecutionAbortedAlarm14349A7B"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "assumedBy": {
-                "principalAccount": "*",
-                "assumeRoleAction": "*"
-              },
-              "inlinePolicies": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachInlinePolicy": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/PipeRole--test-sqs-pipes-states-construct/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructPipeRoletestsqspipesstatesconstruct2CC9A13C"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/enrichmentpolicytest-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "statements": "*"
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "addStatements": [
-                {}
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          },
-          {
-            "type": "aws:cdk:analytics:method",
-            "data": {
-              "attachToRole": [
-                "*"
-              ]
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/enrichmentpolicytest-sqs-pipes-states-construct/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructenrichmentpolicytestsqspipesstatesconstructC752476A"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:analytics:construct",
-            "data": {
-              "retention": 9999,
-              "logGroupName": "*"
-            }
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/LogGroup-test-sqs-pipes-states-construct/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructLogGrouptestsqspipesstatesconstructF827FE15"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/test-sqs-pipes-states-construct/pipe-test-sqs-pipes-states-construct": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "testsqspipesstatesconstructpipetestsqspipesstatesconstruct71A64A15"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/sqspstp-lambda-function-enrichment/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
+      "additionalMetadataFile": "sqspstp-lambda-function-enrichment.metadata.json",
       "displayName": "sqspstp-lambda-function-enrichment"
     },
     "Tree": {
@@ -834,6 +369,7 @@
             "explanation": "When enabled, nodegroupName attribute of the provisioned EKS NodeGroup will not have the cluster name prefix."
           },
           "@aws-cdk/aws-eks:useNativeOidcProvider": {
+            "userValue": true,
             "recommendedValue": true,
             "explanation": "When enabled, EKS V2 clusters will use the native OIDC provider resource AWS::IAM::OIDCProvider instead of creating the OIDCProvider with a custom resource (iam.OpenIDConnectProvider)."
           },
@@ -1035,9 +571,69 @@
             "recommendedValue": true,
             "explanation": "Use the `Distribution` resource instead of `CloudFrontWebDistribution`"
           },
+          "@aws-cdk/aws-cloudfront:defaultFunctionRuntimeV2_0": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use cloudfront-js-2.0 as the default runtime for CloudFront Functions"
+          },
+          "@aws-cdk/aws-elasticloadbalancingv2:usePostQuantumTlsPolicy": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "When enabled, HTTPS/TLS listeners use post-quantum TLS policy by default"
+          },
           "@aws-cdk/core:automaticL1Traits": {
             "recommendedValue": true,
             "explanation": "Automatically use the default L1 traits for L1 constructs`",
+            "unconfiguredBehavesLike": {
+              "v2": true
+            }
+          },
+          "@aws-cdk/aws-batch:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default imageType for EC2 Batch compute environments instead of the deprecated AL2"
+          },
+          "@aws-cdk/aws-eks:defaultToAL2023": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Use AL2023 as the default AMI type for EKS managed node groups using non-GPU instance types instead of the deprecated AL2"
+          },
+          "@aws-cdk/core:annotationsInValidationReport": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Include construct annotations (warnings and errors) in the policy validation report"
+          },
+          "@aws-cdk/core:defaultCrossStackReferences": {
+            "userValue": "weak",
+            "recommendedValue": "weak",
+            "explanation": "Controls whether cross-stack references are strong, weak, or both",
+            "unconfiguredBehavesLike": {
+              "v2": "strong"
+            }
+          },
+          "@aws-cdk/core:validateAgainstDefaultRules": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Treat CloudFormation Validate findings as errors"
+          },
+          "@aws-cdk/aws-ecs:removeEmptyLoadBalancers": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render an empty `LoadBalancers` array on an ECS service that has no target groups"
+          },
+          "@aws-cdk/aws-cloudfront:defaultViewerProtocolPolicyRedirectToHttps": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Default Distribution cache behaviors to redirect HTTP viewer requests to HTTPS"
+          },
+          "@aws-cdk/aws-apigateway:logGroupDestinationArnWithoutWildcard": {
+            "userValue": true,
+            "recommendedValue": true,
+            "explanation": "Render the API Gateway access log destination ARN without the trailing `:*`"
+          },
+          "@aws-cdk/aws-stepfunctions-tasks:evaluateExpressionDedicatedFunction": {
+            "recommendedValue": true,
+            "explanation": "When enabled, each EvaluateExpression task gets its own Lambda function",
             "unconfiguredBehavesLike": {
               "v2": true
             }
@@ -1046,5 +642,5 @@
       }
     }
   },
-  "minimumCliVersion": "2.1106.1"
+  "minimumCliVersion": "2.1148.1"
 }

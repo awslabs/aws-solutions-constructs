@@ -1,4 +1,10 @@
 {
+  "/s3stp-s3-stepfunctions-no-argument": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "s3stp-s3-stepfunctions-no-argument.template.json"
+    }
+  ],
   "/s3stp-s3-stepfunctions-no-argument/lambdas3stp-test": [
     {
       "type": "aws:cdk:analytics:construct",

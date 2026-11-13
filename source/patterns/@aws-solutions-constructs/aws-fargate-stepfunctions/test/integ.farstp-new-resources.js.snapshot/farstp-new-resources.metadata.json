@@ -5,6 +5,10 @@
       "data": {
         "CloudFormation-Validate::W3010": "Literal AZs in template are the result of accessing stack.availabilityZones, this is expected and safe"
       }
+    },
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "farstp-new-resources.template.json"
     }
   ],
   "/farstp-new-resources/Vpc": [
@@ -139,14 +143,14 @@
       "type": "aws:cdk:warning",
       "data": "Enable the 'circuitBreaker' property to trigger a quicker deployment failure if tasks are failing to start up (without this setting deployments may take up to 3 hours to fail). [ack: @aws-cdk/aws-ecs:shouldUseCircuitBreaker]",
       "trace": [
-        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:3506)",
-        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2194)",
-        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:14814)",
-        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js:1:349)",
-        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:8083)",
-        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:861)",
-        "Object.CreateFargateService (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/fargate-helper.js:83:24)",
-        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/IamLogIssue/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-stepfunctions/test/integ.farstp-new-resources.js:31:47)",
+        "Annotations.addMessage (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:4179)",
+        "Annotations.addWarningV2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2785)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/base/base-service.js:1:14814)",
+        "new BaseService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/no-box-stack-traces.js:1:349)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/aws-ecs/lib/fargate/fargate-service.js:1:8083)",
+        "new FargateService2 (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:861)",
+        "Object.CreateFargateService (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/core/lib/fargate-helper.js:83:24)",
+        "Object.<anonymous> (/Users/biffgaut/Documents/Active/AWS/Constructs/github/UpdateCDK/aws-solutions-constructs/source/patterns/@aws-solutions-constructs/aws-fargate-stepfunctions/test/integ.farstp-new-resources.js:31:47)",
         "Module._compile (node:internal/modules/cjs/loader:1781:14)",
         "Object..js (node:internal/modules/cjs/loader:1913:10)",
         "Module.load (node:internal/modules/cjs/loader:1505:32)",

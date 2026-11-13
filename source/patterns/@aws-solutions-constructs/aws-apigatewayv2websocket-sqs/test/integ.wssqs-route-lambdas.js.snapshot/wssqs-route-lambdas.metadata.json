@@ -1,4 +1,10 @@
 {
+  "/wssqs-route-lambdas": [
+    {
+      "type": "aws:cdk:templateFile",
+      "data": "wssqs-route-lambdas.template.json"
+    }
+  ],
   "/wssqs-route-lambdas/connectServiceRole": [
     {
       "type": "aws:cdk:analytics:construct",

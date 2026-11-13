@@ -1,16 +1,16 @@
 {
-  "version": "45.0.0",
+  "version": "55.0.0",
   "files": {
-    "4a0b70825711be851ad50299db387c9c5a1c538a055c51062b475f0242983326": {
+    "f3a82e416a5902377ec146c52c34c8028efab4eeca20c9ecc31ae1b5365e9f53": {
       "displayName": "apiiot-no-usage-plan Template",
       "source": {
         "path": "apiiot-no-usage-plan.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "current_account-current_region-c58128a5": {
+        "current_account-current_region-0866752e": {
           "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
-          "objectKey": "4a0b70825711be851ad50299db387c9c5a1c538a055c51062b475f0242983326.json",
+          "objectKey": "f3a82e416a5902377ec146c52c34c8028efab4eeca20c9ecc31ae1b5365e9f53.json",
           "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
         }
       }
